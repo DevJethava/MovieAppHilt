@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,8 +18,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:title="@string/app_name"
-                app:popupTheme="@style/Theme.MovieAppRevamped.PopupOverlay" />
+                app:popupTheme="@style/Theme.MovieAppRevamped.PopupOverlay"
+                app:title="@string/app_name" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -32,9 +32,9 @@
                 android:id="@+id/progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:layout_centerInParent="true"
                 android:translationZ="90dp"
-                android:layout_centerInParent="true"/>
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
@@ -42,9 +42,9 @@
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:scrollbars="vertical"
-                app:spanCount="2"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                tools:listitem="@layout/movie_card"/>
+                app:spanCount="2"
+                tools:listitem="@layout/movie_card" />
         </RelativeLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Dev Jethava/Documents/AndroidStudioProject/Kotlin/MovieAppHilt/app/src/main/res/layout/activity_main.xml" value="0.19739583333333333" />
+        <entry key="..\:/Users/Dev Jethava/Documents/AndroidStudioProject/Kotlin/MovieAppHilt/app/src/main/res/layout/movie_card.xml" value="0.19739583333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1524822695035461" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.1524822695035461" />
