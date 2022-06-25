@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.delaroystudios.movieapp.data.MovieAppService
 import com.delaroystudios.movieapp.data.model.MoviesResponse
 import com.delaroystudios.movieapp.ui.home.repository.HomeRepository
 import com.delaroystudios.movieapp.util.Resource
@@ -22,11 +23,11 @@ class HomeViewModel @Inject constructor(
 
     val moviePopular: MutableLiveData<Resource<MoviesResponse>> = MutableLiveData()
 
-    fun fetchPopular(apikey: String) {
+    fun fetchPopular(apikey: String, page: Int? = null) {
         moviePopular.postValue(Resource.Loading())
         viewModelScope.launch {
             try {
-                val response = homeRepository.fetchPopular(apikey)
+                val response = homeRepository.fetchPopular(apikey, page)
                 moviePopular.postValue(Resource.Success(response.body()!!))
             } catch (ex: Exception) {
                 when (ex) {

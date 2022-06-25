@@ -8,6 +8,10 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.delaroystudios.movieapp.BuildConfig
 import com.delaroystudios.movieapp.R
 import com.delaroystudios.movieapp.data.model.Movie
@@ -27,6 +31,10 @@ class MainActivity : AppCompatActivity(), RecyclerViewHomeClickListener {
     private val homeViewModel: HomeViewModel by viewModels()
     private val homeAdapter: HomeAdapter by lazy { HomeAdapter(this, this@MainActivity) }
 
+    private var hasMore: Boolean = false
+    private var currentPage: MutableLiveData<Int> = MutableLiveData(1)
+    private var totalPages: Int = 0
+    private var perPageItem = 20
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,39 +52,76 @@ class MainActivity : AppCompatActivity(), RecyclerViewHomeClickListener {
             recyclerView.apply {
                 adapter = homeAdapter
             }
+
+            ivPrevious.setOnClickListener {
+                if (currentPage.value!! > 1) {
+                    callAPI(currentPage.value!! - 1)
+                }
+            }
+
+            ivNext.setOnClickListener {
+                if (hasMore) {
+                    callAPI(currentPage.value!! + 1)
+                }
+            }
         }
 
+        callAPI(currentPage.value!!)
+        observeUI()
+    }
+
+    private fun callAPI(pageNo: Int? = null) {
         if (hasInternetConnection()) {
-            homeViewModel.fetchPopular(BuildConfig.MOVIE_DB_API_TOKEN)
+            homeViewModel.fetchPopular(BuildConfig.MOVIE_DB_API_TOKEN, pageNo)
         } else
             Snackbar.make(binding.root, "No Internet Connection", Snackbar.LENGTH_LONG).show()
-
-        observeUI()
     }
 
     private fun observeUI() {
         homeViewModel.moviePopular.observe(this) {
             when (it) {
                 is Resource.Success -> {
-                    binding.progress.visibility = View.GONE
+                    binding.progress.isVisible = false
+                    binding.recyclerView.isVisible = true
                     val data = it.data!!.movies
+                    hasMore = it.data.page < it.data.totalPages
+                    totalPages = it.data.totalPages
+                    currentPage.postValue(it.data.page)
                     homeAdapter.submitList(data!!)
                 }
                 is Resource.Error -> {
-                    binding.progress.visibility = View.GONE
+                    binding.progress.isVisible = true
+                    binding.recyclerView.isVisible = false
                     it.message?.let { message ->
                         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
                     }
                 }
                 is Resource.Loading -> {
-                    binding.progress.visibility = View.VISIBLE
+                    binding.progress.isVisible = true
+                    binding.recyclerView.isVisible = false
                 }
             }
 
+        }
+
+        currentPage.observe(this) {
+            it?.let { pageNo ->
+                binding.tvPageNo.text = "$pageNo - $totalPages"
+
+                binding.ivPrevious.isVisible = pageNo > 1
+                binding.ivNext.isVisible = hasMore
+            }
         }
     }
 
     override fun clickOnItem(data: Movie, card: View) {
         Snackbar.make(binding.root, data.title.toString(), Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.unbind()
+        homeViewModel.moviePopular.removeObservers(this)
+        currentPage.removeObservers(this)
     }
 }

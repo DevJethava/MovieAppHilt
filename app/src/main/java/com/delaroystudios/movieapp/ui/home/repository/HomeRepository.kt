@@ -13,9 +13,11 @@ class HomeRepository @Inject constructor(
     private val movieAppService: MovieAppService
 ) {
 
-    suspend fun fetchPopular(apikey: String): Response<MoviesResponse> = withContext(
-        Dispatchers.IO) {
-        val popular = movieAppService.getPopularMovies(apikey)
-        popular
-    }
+    suspend fun fetchPopular(apikey: String, page: Int? = null): Response<MoviesResponse> =
+        withContext(
+            Dispatchers.IO
+        ) {
+            val popular = movieAppService.getPopularMovies(apikey, page)
+            popular
+        }
 }

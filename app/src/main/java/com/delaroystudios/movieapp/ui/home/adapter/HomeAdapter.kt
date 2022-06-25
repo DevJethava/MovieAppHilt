@@ -19,7 +19,7 @@ class HomeAdapter(
 
     private val TAG: String = "AppDebug"
 
-    var items: List<Movie> = ArrayList()
+    var items: MutableList<Movie> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -56,7 +56,12 @@ class HomeAdapter(
     }
 
     fun submitList(itemList: List<Movie>) {
-        items = itemList
+        items = itemList as MutableList<Movie>
+        notifyDataSetChanged()
+    }
+
+    fun appendList(itemList: List<Movie>) {
+        items.addAll(itemList)
         notifyDataSetChanged()
     }
 
