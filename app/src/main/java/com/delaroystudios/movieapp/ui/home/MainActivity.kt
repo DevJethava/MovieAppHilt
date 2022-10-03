@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.delaroystudios.movieapp.BuildConfig
 import com.delaroystudios.movieapp.R
 import com.delaroystudios.movieapp.data.model.Movie
@@ -100,6 +98,7 @@ class MainActivity : AppCompatActivity(), RecyclerViewHomeClickListener {
                     binding.progress.isVisible = true
                     binding.recyclerView.isVisible = false
                 }
+                else -> {}
             }
 
         }
