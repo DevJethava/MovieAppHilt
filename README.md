@@ -1,2 +1,2 @@
 # MovieAppHilt
-Simple MVVM + Restrofit and DI as Dagger-Hilt 
+Simple MVVM + Retrofit and DI as Dagger-Hilt 
